@@ -4,12 +4,12 @@ namespace CollectibleSystem
 {
     public class Collectible : MonoBehaviour
     {
-        public Vector3 desiredRotation;
-        private Vector3 currentRotation;
+        public Vector3 _desiredRotation;
+        private Vector3 _currentRotation;
         private void Update()
         {
-            currentRotation += desiredRotation;
-            transform.rotation = Quaternion.Euler(currentRotation);
+            _currentRotation += _desiredRotation;
+            transform.rotation = Quaternion.Euler(_currentRotation);
         }
 
         private void OnTriggerEnter(Collider other)

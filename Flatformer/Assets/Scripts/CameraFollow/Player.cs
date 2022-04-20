@@ -19,11 +19,11 @@ public class Player : MonoBehaviour
     public Vector3 Drag;
     public AudioSource ShardCollectSource;
     public GameObject World;
+    public int SpaceShards;
+    public bool IsGrounded = false;
     
-    private int _spaceShards;
     private int _jumpsRemaining;
     private Vector3 _velocity;
-    private bool _isGrounded = true;
 
     private void Awake()
     {
@@ -38,13 +38,14 @@ public class Player : MonoBehaviour
 
     private void ManageUI()
     {
-        UIShardsValue.text = $"Shards: {_spaceShards}/{RequiredShards}";
+        if (!UIShardsValue) return;
+        UIShardsValue.text = $"Shards: {SpaceShards}/{RequiredShards}";
     }
     
     private void CalculateMovement()
     {
-        _isGrounded = Physics.CheckSphere(Step.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
-        if (_isGrounded && _velocity.y < 0)
+        IsGrounded = Physics.CheckSphere(Step.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+        if (IsGrounded && _velocity.y < 0)
         {   
             _velocity.y = 0f;
             _jumpsRemaining = JumpCounter;
@@ -79,9 +80,9 @@ public class Player : MonoBehaviour
     
     public void CollectSpaceShard()
     {
-        _spaceShards += 1;
-        ShardCollectSource.Play();
-        if (_spaceShards == RequiredShards) WorldGeneration();
+        SpaceShards += 1;
+        if (ShardCollectSource) ShardCollectSource.Play();
+        if (SpaceShards == RequiredShards) WorldGeneration();
     }
 
     public void WorldGeneration()
